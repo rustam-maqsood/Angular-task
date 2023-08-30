@@ -1,0 +1,47 @@
+<div class="form">
+    <h2 id="registration">Registration Form</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="reactiveForm">
+        <div formGroupName="personalDetails">
+            <div>
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" [ngClass]="{'is-invalid':submitted && reactiveForm.controls['firstname'].errors}" placeholder="Name.." formControlName="firstname" type="text"  class="form-control">
+
+        <div>
+            <span style="color: red;" *ngIf="!reactiveForm.get('personalDetails.firstname').valid && reactiveForm.get('personalDetails.firstname').touched">first name is required</span>
+          </div></div>
+        <br>
+        <label for="age">Age</label>
+        <input type="text" id="age" placeholder="Age" formControlName="age">
+        <div>
+            <span style="color: red;" *ngIf="reactiveForm.get('personalDetails.age').invalid && reactiveForm.get('personalDetails.age').touched">age is required</span>
+          </div>
+
+        </div>
+        <label for="city"></label>
+            
+            <label for="selectedCity">Select a city:</label>
+            <select id="selectCity" formControlName="selectCity">
+                <option value="" disabled>Select a city</option>
+                <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+              </select>  
+              <!-- <div>
+                <span style="color: red;" *ngIf="!reactiveForm.get('selectCity').valid && reactiveForm.get('selectCity').touched">City Name is Required</span>
+              </div> -->
+      
+        <div formArrayName="address">
+            <ng-container *ngFor="let address of reactiveForm.get('address')['controls'];let i=index" [formGroupName]="i">
+              <!-- [formGroupName]="i" binds the FormGroup at index i to the current iteration of the loop. -->
+            <input type="text" placeholder="add address..." formControlName="add">
+            <div>
+              <span style="color: red;" *ngIf="!address.get('add').valid && address.get('add').touched">address is Required</span>
+            </div>
+            <button type="button"  (click)="removeAddress(i)" formControlName="{{i}}">- Remove</button>
+            <hr>
+            </ng-container>
+            <button (click)="addAddress()" type="button">+ Add Address</button>
+        </div>
+        <hr>
+        <input type="submit" value="Submit" id="btn" >
+    </form>
+</div>
+<!-- [disabled]="reactiveForm.invalid" -->
